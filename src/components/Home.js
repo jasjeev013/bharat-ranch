@@ -1,5 +1,6 @@
 import React from 'react'
 import ControlledCarousel from './ControlledCarousel';
+import Cards from './Cards';
 
 
 function Home() {
@@ -15,9 +16,13 @@ function Home() {
 
 
 
+                <div className='container my-5 '>
+                    <h1 className="text-center" >KrishiBot</h1>
+                    <p className="text-center text-justify-center " >KrishiBot sees all,knows all</p>
+                </div>
 
-                <h1>Helloooo......</h1>
             </div>
+            <Cards />
         </div>
     )
 }

@@ -15,7 +15,7 @@ function ControlledCarousel() {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAoeNy208a3GpQdrQ6C_S0bhgQ90sCRu2Hgw&s"
+              src="https://via.placeholder.com/350x200?text=Card+Image+$%7Bcard%7D"
               
               alt="First slide"
             />
@@ -27,7 +27,7 @@ function ControlledCarousel() {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://www.schoolofguitar.ie/wp-content/uploads/2013/05/200x100.gif"
+              src="https://via.placeholder.com/350x200?text=Card+Image+$%7Bcard%7D"
               alt="Second slide"
             />
             <Carousel.Caption>
@@ -38,7 +38,7 @@ function ControlledCarousel() {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://www.schoolofguitar.ie/wp-content/uploads/2013/05/200x100.gif"
+              src="https://via.placeholder.com/350x200?text=Card+Image+$%7Bcard%7D"
               alt="Third slide"
             />
             <Carousel.Caption>
