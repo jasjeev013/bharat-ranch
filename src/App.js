@@ -1,8 +1,10 @@
 import './App.css';
-import  { useState } from 'react';
+import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import NavBar from './components/NavBar';
 import Home from './components/Home';
+import NewsLetter from './components/NewsLetter';
+import ContactUs from './components/ContactUs';
 
 function App() {
 
@@ -15,9 +17,11 @@ function App() {
 
   return (
     <div>
-      <NavBar  toggleSidebar={toggleSidebar} />
-      <Home/>
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>
+      <NavBar toggleSidebar={toggleSidebar} />
+      <Home />
+      <NewsLetter />
+      <ContactUs/>
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
     </div>
   );
 }
