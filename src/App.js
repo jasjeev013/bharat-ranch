@@ -2,7 +2,8 @@ import './App.css';
 import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import NavBar from './components/NavBar';
-import BuySell from './components/BuySell';
+import Category from './components/Category';
+// import BuySell from './components/BuySell';
 // import Home from './components/Home';
 // import NewsLetter from './components/NewsLetter';
 // import ContactUs from './components/ContactUs';
@@ -22,7 +23,8 @@ function App() {
       {/* <Home />
       <NewsLetter />
       <ContactUs/> */}
-      <BuySell/>
+      {/* <BuySell/> */}
+      <Category/>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
     </div>
   );
