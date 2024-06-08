@@ -2,9 +2,10 @@ import './App.css';
 import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import NavBar from './components/NavBar';
-import Home from './components/Home';
-import NewsLetter from './components/NewsLetter';
-import ContactUs from './components/ContactUs';
+import BuySell from './components/BuySell';
+// import Home from './components/Home';
+// import NewsLetter from './components/NewsLetter';
+// import ContactUs from './components/ContactUs';
 
 function App() {
 
@@ -18,9 +19,10 @@ function App() {
   return (
     <div>
       <NavBar toggleSidebar={toggleSidebar} />
-      <Home />
+      {/* <Home />
       <NewsLetter />
-      <ContactUs/>
+      <ContactUs/> */}
+      <BuySell/>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
     </div>
   );
