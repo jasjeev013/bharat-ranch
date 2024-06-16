@@ -2,7 +2,10 @@ import './App.css';
 import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import NavBar from './components/NavBar';
-import Product from './components/Product';
+// import OrderTable from './components/Customer';
+// import AddingNewItem from './components/AddingNewItem';
+// import FarmerDashboard from './components/Farmer';
+// import Product from './components/Product';
 // import Category from './components/Category';
 // import BuySell from './components/BuySell';
 // import Home from './components/Home';
@@ -19,7 +22,7 @@ function App() {
   };
 
   //Just fo refrence for Product.js
-  const product = {
+  /*const product = {
     image: 'https://via.placeholder.com/400x300',  // replace with the actual path
     givenBy: 'Depandra tiwari',
     date: '26-09-23',
@@ -28,7 +31,7 @@ function App() {
     address: 'Basti, UP',
     price: '10,00',
     contactPerson: 'Depandra',
-  };
+  };*/
 
   return (
     <div>
@@ -38,7 +41,10 @@ function App() {
       <ContactUs/> */}
       {/* <BuySell/> */}
       {/* <Category/> */}
-      <Product product={product}/>
+      {/* <Product product={product}/> */}
+      {/* <FarmerDashboard/> */}
+      {/* <AddingNewItem/> */}
+      {/* <OrderTable/> */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
     </div>
   );
