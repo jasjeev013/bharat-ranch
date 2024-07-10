@@ -11,7 +11,7 @@ function ControlledCarousel() {
         <Carousel  style={{
           height:'500px',
           width:'800px'
-        }} >
+        }} className='mx-5'  >
           <Carousel.Item>
             <img
               className="d-block w-100"

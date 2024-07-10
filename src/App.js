@@ -8,9 +8,7 @@ import NavBar from './components/NavBar';
 // import Product from './components/Product';
 // import Category from './components/Category';
 // import BuySell from './components/BuySell';
-// import Home from './components/Home';
-// import NewsLetter from './components/NewsLetter';
-// import ContactUs from './components/ContactUs';
+import Home from './components/Home';
 
 function App() {
 
@@ -36,9 +34,7 @@ function App() {
   return (
     <div>
       <NavBar toggleSidebar={toggleSidebar} />
-      {/* <Home />
-      <NewsLetter />
-      <ContactUs/> */}
+      <Home />
       {/* <BuySell/> */}
       {/* <Category/> */}
       {/* <Product product={product}/> */}

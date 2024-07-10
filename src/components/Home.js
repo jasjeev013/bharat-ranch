@@ -1,6 +1,8 @@
 import React from 'react'
 import ControlledCarousel from './ControlledCarousel';
 import Cards from './Cards';
+import NewsLetter from './NewsLetter';
+import ContactUs from './ContactUs';
 
 
 function Home() {
@@ -18,6 +20,8 @@ function Home() {
             </div>
             
             <Cards />
+            <NewsLetter/>
+            <ContactUs/>
         </div>
     )
 }
