@@ -1,87 +1,91 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 const User = require('../models/user'); // Adjust the path as necessary
-
-// Create a new user
-router.post('/', async (req, res) => {
-  const { email, password, name, contact, description, address, role } = req.body;
-  try {
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
-    }
-
-    user = new User({ email, password, name, contact, description, address, role });
-
-    // Hash the password before saving
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    const savedUser = await user.save();
-
-    return res.status(201).json(savedUser);
-  } catch (error) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
+const { auth, authorize } = require('../middleware/auth');
 
 // Read all users
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select('-password');
     res.json(users);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Read a specific user
-router.get('/:id', getUser, (req, res) => {
-  res.json(res.user);
+/*// Get a specific user by Id                     Will Not work as Payload Contains Email Not Id
+router.get('/',auth,async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.status(500).send('Server error');
+  }
+});*/
+// Get a specific user by email
+router.get('/email',auth,async (req, res) => {
+  try {
+  
+    
+    const user = await User.findOne({email:req.user.email}).select('-password');
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found',email });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'User not found'});
+    }
+    res.status(500).send('Server error');
+  }
 });
 
-// Update a user
-router.put('/:id', getUser, async (req, res) => {
-  if (req.body.name != null) {
-    res.user.name = req.body.name;
-  }
-  if (req.body.contact != null) {
-    res.user.contact = req.body.contact;
-  }
-  // Add other fields as necessary
-
+// Update a user by email
+router.put('/:id', auth,async (req, res) => {
+  const {  name, contact, description, address} = req.body;
+  const updatedUser = {};
+  if (name) updatedUser.name = name;
+  if (contact) updatedUser.contact = contact;
+  if (description) updatedUser.description = description;
+  if (address) updatedUser.address = address;
   try {
-    const updatedUser = await res.user.save();
-    res.json(updatedUser);
+
+    const updateUser = await User.findOneAndUpdate(
+      {email: req.user.email},
+      { $set: updatedUser },
+      { new: true }
+    ).select('-password');
+    res.json(updateUser);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.status(500).send('Server error');
   }
 });
 
 // Delete a user
-router.delete('/:id', getUser, async (req, res) => {
+router.delete('/', auth,async (req, res) => {
   try {
-    await res.user.remove();
+    await User.findOneAndDelete({email : req.user.email});
     res.json({ message: 'Deleted User' });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'User not found'});
+    }
+    res.status(500).send('Server error');
   }
 });
-
-// Middleware to get a user by ID
-async function getUser(req, res, next) {
-  let user;
-  try {
-    user = await User.findById(req.params.id);
-    if (user == null) {
-      return res.status(404).json({ message: 'Cannot find user' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-  res.user = user;
-  next();
-}
 
 module.exports = router;

@@ -17,6 +17,7 @@ mongoose.connect('mongodb://localhost:27017/bharatRanch')
 
 
 // Import routes
+const authRoutes = require('./routes/auth.js');
 const userRoutes = require('./routes/user.js');
 const commodityRoutes = require('./routes/commodity.js');
 const equipmentRoutes = require('./routes/equipment.js');
@@ -25,6 +26,7 @@ const buyRequestRoutes = require('./routes/buyRequest.js');
 const borrowRequestRoutes = require('./routes/borrowRequest.js');
 
 // Use routes
+app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/commodities', commodityRoutes);
 app.use('/equipments', equipmentRoutes);

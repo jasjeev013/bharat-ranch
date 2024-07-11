@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const borrowRequestSchema = new mongoose.Schema({
-  equipment_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Equipment', required: true },
+const buyRequestSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  time_period: { type: String, required: true }
+  commodity_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Commodity', required: true },
+  qty: { type: Number, required: true }
 });
 
-module.exports = mongoose.model('BorrowRequest', borrowRequestSchema);
+module.exports = mongoose.model('BuyRequest', buyRequestSchema);
