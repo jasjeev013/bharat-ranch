@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const commoditySchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  user_email: { type: mongoose.Schema.Types.String, ref: 'User', required: true },
   name: { type: String, required: true },
   image: { type: String },
   description: { type: String },

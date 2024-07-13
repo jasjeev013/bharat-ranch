@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const BorrowRequest = require('../models/borrowRequest');
+const BorrowRequest = require('../models/BorrowRequest');
+const { auth, authorize } = require('../middleware/auth');
+const Equipment = require('../models/equipment');
 
 // Create a new borrow request
-router.post('/', async (req, res) => {
+router.post('/:id',auth,authorize('farmer'), async (req, res) => {
   try {
-    const borrowRequest = new BorrowRequest(req.body);
+    const {time_period,qty} = req.body;
+    const borrowRequest = new BorrowRequest({equipment_id:req.params.id,user_email: req.user.email,time_period,status:'pending',qty});
     const savedBorrowRequest = await borrowRequest.save();
     res.status(201).json(savedBorrowRequest);
   } catch (err) {
@@ -13,56 +16,61 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Read all borrow requests
-router.get('/', async (req, res) => {
+// Read all borrow requests for specific borrower
+router.get('/borrower',auth,authorize('farmer'), async (req, res) => {
   try {
-    const borrowRequests = await BorrowRequest.find();
-    res.json(borrowRequests);
+    const borrowRequests = await BorrowRequest.find({user_email:req.user.email});
+    res.status(200).json(borrowRequests);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Read a specific borrow request
-router.get('/:id', getBorrowRequest, (req, res) => {
-  res.json(res.borrowRequest);
+
+// Read a  request by equipment_id
+router.get('/equipment/:id', auth,authorize('farmer'),async (req, res) => {
+  try {
+    const commodity = await Equipment.findOne({_id:req.params.id,user_email:req.user.email})
+    if(!commodity){
+      return res.status(404).json({ message: 'Commodity not found' });
+    }
+    const borrowRequest = await BorrowRequest.find({equipment_id:req.params.id})
+    res.status(200).json(borrowRequest);
+  } catch (error) {
+    res.status(500).json({ message: err.message });
+  }
+
 });
 
 // Update a borrow request
-router.put('/:id', getBorrowRequest, async (req, res) => {
-  Object.assign(res.borrowRequest, req.body);
-
+router.put('/equipment/:id',auth,authorize('farmer'),  async (req, res) => {
+  const {status} = req.body;
   try {
-    const updatedBorrowRequest = await res.borrowRequest.save();
-    res.json(updatedBorrowRequest);
+    const equipment = Equipment.findOne({user_email:req.user.email,_id:req.params.id});
+    if(!equipment){
+      return res.status(404).json({ message: 'Equipment not found' });
+    }
+    const updatedRequest = await BorrowRequest.findOneAndUpdate({equipment_id:req.params.id}, {status}, { new: true })
+    if(!updatedRequest){
+      return res.status(404).json({ message: 'Borrow Request not found' });
+    }
+    res.status(200).json(updatedRequest);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
 // Delete a borrow request
-router.delete('/:id', getBorrowRequest, async (req, res) => {
+router.delete('/:id',auth,authorize('farmer'),  async (req, res) => {
   try {
-    await res.borrowRequest.remove();
-    res.json({ message: 'Deleted Borrow Request' });
+    const borrowRequest = await BorrowRequest.findOneAndDelete({equipment_id:req.params.id});
+    if (!borrowRequest) {
+      return res.status(404).json({ message: 'Borrow Request not found' });
+    }
+    res.status(200).json({ message: 'Deleted Borrow Request' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
-
-// Middleware to get a borrow request by ID
-async function getBorrowRequest(req, res, next) {
-  let borrowRequest;
-  try {
-    borrowRequest = await BorrowRequest.findById(req.params.id);
-    if (borrowRequest == null) {
-      return res.status(404).json({ message: 'Cannot find borrow request' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-  res.borrowRequest = borrowRequest;
-  next();
-}
 
 module.exports = router;

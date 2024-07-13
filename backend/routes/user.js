@@ -30,11 +30,15 @@ router.get('/',auth,async (req, res) => {
     res.status(500).send('Server error');
   }
 });*/
+
 // Get a specific user by email
-router.get('/email',auth,async (req, res) => {
+router.get('/email/:email',auth,async (req, res) => {
   try {
-  
-    
+
+    if(req.user.email!=req.params.email){
+      return res.status(500).send("User with this email not found")
+    }
+
     const user = await User.findOne({email:req.user.email}).select('-password');
     if (!user) {
       return res.status(404).json({ msg: 'User not found',email });
@@ -50,7 +54,7 @@ router.get('/email',auth,async (req, res) => {
 });
 
 // Update a user by email
-router.put('/:id', auth,async (req, res) => {
+router.put('/:email', auth,async (req, res) => {
   const {  name, contact, description, address} = req.body;
   const updatedUser = {};
   if (name) updatedUser.name = name;
@@ -75,8 +79,13 @@ router.put('/:id', auth,async (req, res) => {
 });
 
 // Delete a user
-router.delete('/', auth,async (req, res) => {
+router.delete('/:email', auth,async (req, res) => {
   try {
+
+    if(req.user.email!=req.params.email){
+      return res.status(500).send("User with this email not found")
+    }
+    
     await User.findOneAndDelete({email : req.user.email});
     res.json({ message: 'Deleted User' });
   } catch (err) {

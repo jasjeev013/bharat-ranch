@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const BuyRequest = require('../models/buyRequest');
+const BuyRequest = require('../models/BuyRequest');
+const { auth, authorize } = require('../middleware/auth');
+const Commodity = require('../models/commodity');
+
 
 // Create a new buy request
-router.post('/', async (req, res) => {
+router.post('/',auth, async (req, res) => {
   try {
-    const buyRequest = new BuyRequest(req.body);
+    const {commodity_id,quantity} = req.body;
+    const buyRequest = new BuyRequest({user_email:req.user.email,commodity_id,quantity,status:'pending'});
     const savedBuyRequest = await buyRequest.save();
     res.status(201).json(savedBuyRequest);
   } catch (err) {
@@ -13,56 +17,68 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Read all buy requests
-router.get('/', async (req, res) => {
+// Read all buy requests for a specific user_id(Purchaser)
+router.get('/email/:email',auth, async (req, res) => {
   try {
-    const buyRequests = await BuyRequest.find();
-    res.json(buyRequests);
+    const buyRequests = await BuyRequest.find({user_email:req.user.email});
+    res.status(200).json(buyRequests);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Read a specific buy request
-router.get('/:id', getBuyRequest, (req, res) => {
-  res.json(res.buyRequest);
-});
-
-// Update a buy request
-router.put('/:id', getBuyRequest, async (req, res) => {
-  Object.assign(res.buyRequest, req.body);
+// Read all buy requests for a commodity
+router.get('/:id',auth,authorize('farmer') ,async (req, res) => {
 
   try {
-    const updatedBuyRequest = await res.buyRequest.save();
-    res.json(updatedBuyRequest);
+    const commodity = await Commodity.findOne({user_email:req.user.email,_id:req.params.id})
+    if(!commodity){
+      return res.status(404).json({ message: 'Commodity not found' });
+    }
+    const buyRequest = await BuyRequest.find({commodity_id: req.params.id});  
+    res.status(200).json(buyRequest); 
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+// Update a buy request
+router.put('/:id',auth, async (req, res) => {
+  const { status } = req.body;
+  if (status == null) {
+    return res.status(400).json({ message: 'Invalid status' });
+  }
+
+  try {
+    const buyRequest = await BuyRequest.findOne({_id:req.params.id});
+    if(!buyRequest){
+      return res.status(404).json({ message: 'Buy Request not found' });
+    }
+    const commodity = await Commodity.findOne({user_email:req.user.email,_id:buyRequest.commodity_id});
+    if(!commodity){
+      return res.status(404).json({ message: 'Commodity not found' });
+    }
+    const updatedBuyRequest = await BuyRequest.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    res.status(200).json(updatedBuyRequest);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
 // Delete a buy request
-router.delete('/:id', getBuyRequest, async (req, res) => {
+router.delete('/:id',auth, async (req, res) => {
   try {
-    await res.buyRequest.remove();
-    res.json({ message: 'Deleted Buy Request' });
+    const buyRequest = await BuyRequest.findOneAndDelete({commodity_id:req.params.id,user_email:req.user.email});
+    if (buyRequest == null) {
+      return res.status(404).json({ message: 'Cannot find Buy Request' });
+    }
+    res.status(200).json(buyRequest);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Middleware to get a buy request by ID
-async function getBuyRequest(req, res, next) {
-  let buyRequest;
-  try {
-    buyRequest = await BuyRequest.findById(req.params.id);
-    if (buyRequest == null) {
-      return res.status(404).json({ message: 'Cannot find buy request' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-  res.buyRequest = buyRequest;
-  next();
-}
 
 module.exports = router;

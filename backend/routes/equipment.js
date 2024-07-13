@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const Equipment = require('../models/equipment');
-
+const { auth, authorize } = require('../middleware/auth');
+ 
 // Create a new equipment
-router.post('/', async (req, res) => {
+router.post('/',auth,authorize('farmer'), async (req, res) => {
   try {
-    const equipment = new Equipment(req.body);
+    const {name,description,price,qty} = req.body;
+    const equipment = new Equipment({user_email:req.user.email,name,description,price,qty});
     const savedEquipment = await equipment.save();
     res.status(201).json(savedEquipment);
   } catch (err) {
@@ -14,7 +16,7 @@ router.post('/', async (req, res) => {
 });
 
 // Read all equipment
-router.get('/', async (req, res) => {
+router.get('/',auth,authorize('farmer'), async (req, res) => {
   try {
     const equipment = await Equipment.find();
     res.json(equipment);
@@ -23,46 +25,63 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Read all equipment by lender
+router.get('/email/:email',auth,authorize('farmer'), async (req, res) => {
+  try {
+    const equipment = await Equipment.find({user_email:req.user.email});
+    res.json(equipment);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Read a specific equipment
-router.get('/:id', getEquipment, (req, res) => {
-  res.json(res.equipment);
+router.get('/:id',auth,authorize('farmer'),  async (req, res) => {
+  try {
+    const equipment = await Equipment.findOne({_id:req.params.id,user_email:req.user.email});
+    if(!equipment){
+      return res.status(404).json({message:'Equipment not found'})
+    }
+    res.status(200).json(equipment);
+  } catch (error) {
+    res.status(500).json({message:err});
+  }
 });
 
 // Update equipment
-router.put('/:id', getEquipment, async (req, res) => {
-  Object.assign(res.equipment, req.body);
+router.put('/:id', auth,authorize('farmer'),  async (req, res) => {
+  const {name,description,price,qty} = req.body;
+  const updatedEquipment = {};
+  if (name) updatedEquipment.name = name;
+  if (description) updatedEquipment.description = description;
+  if (price) updatedEquipment.price
+  if (qty) updatedEquipment.qty = qty;
 
   try {
-    const updatedEquipment = await res.equipment.save();
-    res.json(updatedEquipment);
+    const equipment = await Equipment.findOne({_id:req.params.id,user_email:req.user.email});
+    if (!equipment) {
+      return res.status(404).json({ message: 'Equipment not found' });
+    }
+    const updatesEuip = await Equipment.findOneAndUpdate({_id:req.params.id,user_email:req.user.email}, updatedEquipment, { new: true });
+    res.status(200).json(updatesEuip);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
 // Delete equipment
-router.delete('/:id', getEquipment, async (req, res) => {
+router.delete('/:id', auth,authorize('farmer'),  async (req, res) => {
   try {
-    await res.equipment.remove();
+    
+    const equipment = await Equipment.findOneAndDelete({_id:req.params.id,user_email:req.user.email});
+    if (!equipment) {
+      return res.status(404).json({ message: 'Equipment not found' });
+    }
     res.json({ message: 'Deleted Equipment' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Middleware to get equipment by ID
-async function getEquipment(req, res, next) {
-  let equipment;
-  try {
-    equipment = await Equipment.findById(req.params.id);
-    if (equipment == null) {
-      return res.status(404).json({ message: 'Cannot find equipment' });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-  res.equipment = equipment;
-  next();
-}
 
 module.exports = router;
