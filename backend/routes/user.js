@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/user'); // Adjust the path as necessary
 const { auth, authorize } = require('../middleware/auth');
+const upload = require('../config/multer')
 
 // Read all users
 router.get('/', async (req, res) => {
@@ -54,15 +55,19 @@ router.get('/email/:email',auth,async (req, res) => {
 });
 
 // Update a user by email
-router.put('/:email', auth,async (req, res) => {
+router.put('/:email', auth, upload.single('image'),async (req, res) => {
+
+  
   const {  name, contact, description, address} = req.body;
   const updatedUser = {};
   if (name) updatedUser.name = name;
   if (contact) updatedUser.contact = contact;
   if (description) updatedUser.description = description;
   if (address) updatedUser.address = address;
-  try {
+  if(req.file) updatedUser.image = req.file.path;
 
+  try {
+    
     const updateUser = await User.findOneAndUpdate(
       {email: req.user.email},
       { $set: updatedUser },
