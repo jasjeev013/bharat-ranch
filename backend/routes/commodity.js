@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const Commodity = require('../models/commodity');
+const Commodity = require('../models/Commodity');
 const { auth, authorize } = require('../middleware/auth');
 const upload = require('../config/multer')
 
 // Create a new commodity
 router.post('/',auth,authorize('farmer'),upload.single('image') ,async (req, res) => {
   try {
-    const {name,description,price,min_qty,total_qty} = req.body;
+    const {name,description,price,min_qty,total_qty,categories} = req.body;
     const image = null;
     if(req.file){
       image = req.file.path;
     }
-    const commodity = new Commodity({user_email:req.user.email,name,description,price,min_qty,total_qty,image});
+    const commodity = new Commodity({user_email:req.user.email,name,description,price,min_qty,total_qty,image,categories});
     const savedCommodity = await commodity.save();
     res.status(201).json(savedCommodity);
   } catch (err) {
@@ -59,7 +59,7 @@ router.get('/:id',auth,authorize('farmer') , async (req, res) => {
 
 // Update a commodity
 router.put('/:id',auth,authorize('farmer'),upload.single('image'), async (req, res) => {
-  const {name,description,price,min_qty,total_qty} = req.body;
+  const {name,description,price,min_qty,total_qty,categories} = req.body;
   const updatedCommodity = {};
   if (name) updatedCommodity.name = name;
   if (description) updatedCommodity.description = description;
@@ -67,6 +67,8 @@ router.put('/:id',auth,authorize('farmer'),upload.single('image'), async (req, r
   if (min_qty) updatedCommodity.min_qty = min_qty;
   if (total_qty) updatedCommodity.total_qty = total_qty;
   if(req.file) updatedCommodity.image = req.file.path;
+  if (categories) updatedCommodity.categories = categories;
+  
 
   try {
     const commodity = await Commodity.findOne({_id: req.params.id,user_email:req.user.email});
@@ -90,6 +92,50 @@ router.delete('/:id',auth, async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+
+// Route to get all distinct categories with a count and a distinct image for each category
+router.get('/categories/find', async (req, res) => {
+  try {
+    const categories = await Commodity.aggregate([
+      { $unwind: '$categories' }, // Unwind the categories array
+      {
+        $group: {
+          _id: '$categories',
+          count: { $sum: 1 }, // Count each occurrence of the category
+          image: { $first: '$image' } // Get the first image associated with the category
+        }
+      },
+      {
+        $project: {
+          category: '$_id',
+          count: 1,
+          image: 1,
+          _id: 0
+        }
+      }
+    ]);
+
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Route to get all commodities by a specific category
+router.get('/category/find', async (req, res) => {
+  try {
+    const { category } = req.query;
+    if (!category) {
+      return res.status(400).json({ error: 'Category is required' });
+    }
+
+    const commodities = await Commodity.find({ categories: category });
+    res.json(commodities);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

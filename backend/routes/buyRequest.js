@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const BuyRequest = require('../models/BuyRequest');
 const { auth, authorize } = require('../middleware/auth');
-const Commodity = require('../models/commodity');
+const Commodity = require('../models/Commodity');
 
 
 // Create a new buy request

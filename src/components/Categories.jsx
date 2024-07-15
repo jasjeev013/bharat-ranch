@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const BuySell = () => {
+const Categories = () => {
     const categories = [
         { id: 1, name: 'Tomatoes', image: 'https://via.placeholder.com/300', count: 108 },
         { id: 2, name: 'Apples', image: 'https://via.placeholder.com/300', count: 59 },
@@ -54,4 +54,4 @@ const BuySell = () => {
     );
 };
 
-export default BuySell;
+export default Categories;

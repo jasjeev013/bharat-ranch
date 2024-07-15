@@ -6,9 +6,9 @@ import NavBar from './components/NavBar';
 // import AddingNewItem from './components/AddingNewItem';
 // import FarmerDashboard from './components/Farmer';
 // import Product from './components/Product';
-// import Category from './components/Category';
-// import BuySell from './components/BuySell';
-import Home from './components/Home';
+import Category from './components/Category';
+// import Categories from './components/Categories';
+// import Home from './components/Home';
 
 function App() {
 
@@ -32,12 +32,12 @@ function App() {
   };*/
 
   return (
-    <div>
+    <div className='addMargin'>
       <NavBar toggleSidebar={toggleSidebar} />
       
-      <Home />
-      {/* <BuySell/> */}
-      {/* <Category/> */}
+      {/* <Home /> */}
+      {/* <Categories/> */}
+      <Category/>
       {/* <Product product={product}/> */}
       {/* <FarmerDashboard/> */}
       {/* <AddingNewItem/> */}
