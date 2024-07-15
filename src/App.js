@@ -34,6 +34,7 @@ function App() {
   return (
     <div>
       <NavBar toggleSidebar={toggleSidebar} />
+      
       <Home />
       {/* <BuySell/> */}
       {/* <Category/> */}

@@ -7,7 +7,7 @@ import botLogo from '../images/botLogo.png'
 
 function Home() {
     return (
-        <div>
+        <div className='addMargin'>
             <div className="d-flex justify-content-between" style={{
                 backgroundColor: '#C1DAF9',
                 // margin: '10px',
@@ -16,7 +16,7 @@ function Home() {
                 fontWeight: 'bold',
                 // borderRadius: '10px'
 
-        
+
             }}>
                 <div className="container">
                     <ControlledCarousel />
@@ -28,16 +28,16 @@ function Home() {
                         height: '130px',
                         margin: 'auto',
                         display: 'block'
-                    
+
                     }} src={botLogo} alt="" />
                     <h1 className="text-center" style={{
                         color: '#8C644D',
                         fontSize: '60px',
-                   
+
                         fontFamily: 'Rowdies',
                         fontWeight: '900',
                         fontStyle: 'normal'
-                        
+
 
                     }} >Krishi Bot</h1>
                     <p className="text-center text-justify-center" > <i>KrishiBot sees all,knows all</i> </p>
@@ -45,7 +45,7 @@ function Home() {
                         display: 'flex',
                         justifyContent: 'center',
                         gap: '70px'
-                    
+
                     }}>
                         <button style={{
                             backgroundColor: 'rgb(140, 100, 77,0.8)',
@@ -53,7 +53,7 @@ function Home() {
                             padding: '10px 20px',
                             border: 'none',
                             borderRadius: '10px'
-                        
+
                         }}>Explore</button>
                         <button style={{
                             backgroundColor: 'rgb(140, 100, 77,0.8)',
@@ -61,16 +61,16 @@ function Home() {
                             padding: '10px 20px',
                             border: 'none',
                             borderRadius: '10px'
-                        
-                        
+
+
                         }}>Know More</button>
                     </div>
                 </div>
             </div>
-            
+
             <Cards />
-            <NewsLetter/>
-            <ContactUs/>
+            <NewsLetter />
+            <ContactUs />
         </div>
     )
 }
