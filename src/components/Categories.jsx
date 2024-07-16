@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 const Categories = () => {
     const categories = [
@@ -41,9 +42,9 @@ const Categories = () => {
                                 <br />
                                 <div className="d-flex justify-content-end">
 
-                                    <a href="/" className="btn btn-primary ">
+                                    <Link to={`/category/${category.id}`} className="btn btn-primary ">
                                         More Details
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

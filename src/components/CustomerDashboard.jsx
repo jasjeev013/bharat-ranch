@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-const OrderTable = () => {
+const CustomerDashboard = () => {
     return (
         <Container>
             <div className="my-4 d-flex justify-content-between">
@@ -47,4 +47,4 @@ const OrderTable = () => {
     );
 }
 
-export default OrderTable;
+export default CustomerDashboard;

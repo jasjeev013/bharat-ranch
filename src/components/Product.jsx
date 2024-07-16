@@ -3,19 +3,29 @@ import React, { useState } from 'react';
 import { Card, Button, Container, Row, Col, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Product = ({ product }) => {
+const Product = () => {
+    const product = {
+        image: 'https://via.placeholder.com/400x300',  // replace with the actual path
+        givenBy: 'Depandra tiwari',
+        date: '26-09-23',
+        state: 'Uttar Pradesh',
+        stock: '100kg',
+        address: 'Basti, UP',
+        price: '10,00',
+        contactPerson: 'Depandra',
+    };
     const [message, setMessage] = useState('');
 
     const handleMessageChange = (e) => {
         setMessage(e.target.value);
     };
 
-    const handleSendMessage = () => {
-        console.log(message);
-    };
+    // const handleSendMessage = () => {
+    //     console.log(message);
+    // };
 
     return (
-        <Container className="mt-4">
+        <Container className="mt-5">
             <Row className="justify-content-center">
                 <Col md={8}>
                     <Card>
@@ -33,7 +43,7 @@ const Product = ({ product }) => {
                                 <Card.Body>
                                     <Card.Title style={{
                                         fontSize: '2rem'
-                                    
+
                                     }}>Organic cherry tomatoes</Card.Title>
                                     <Card.Subtitle className="mb-2 text-muted">
                                         Given By: {product.givenBy} on {product.date}
@@ -70,7 +80,7 @@ const Product = ({ product }) => {
                                 &nbsp;&nbsp;- Contact person: {product.contactPerson}
                             </Card.Text>
                         </Card.Body>
-                        
+
 
                     </Card>
                 </Col>

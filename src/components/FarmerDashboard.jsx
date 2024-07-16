@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 function FarmerDashboard() {
     return (
@@ -10,7 +11,7 @@ function FarmerDashboard() {
                     <h1>Hi Farmer</h1>
                 </div>
                 <div>
-                    <Button variant="primary">+ New Item</Button>
+                    <Button variant="primary"><Link className='farmerButtons' to="/addingNewItem">+ New Item</Link> </Button>
                 </div>
             </div>
 

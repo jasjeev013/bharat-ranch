@@ -8,19 +8,31 @@ const Category = () => {
             name: 'Cherry tomatoes',
             givenBy: 'Depandra tiwari',
             date: '26-09-23',
-            image: 'https://via.placeholder.com/300x200' // Dummy image URL
+            image: 'https://via.placeholder.com/300x200',
+            total_qty: 342,
+            min_qty: 42,
+            price: 2311,
+            description: 'Testing each commodity with all of the things wehn talking with each other. When it will hpne it will make thode things'
         },
         {
             name: 'Desi tomato',
             givenBy: 'Mahesh kumar',
             date: '22-09-23',
-            image: 'https://via.placeholder.com/300x200' // Dummy image URL
+            image: 'https://via.placeholder.com/300x200',
+            total_qty: 342,
+            min_qty: 42,
+            price: 2311,
+            description: 'Testing each commodity with all of the things wehn talking with each other. When it will hpne it will make thode things'
         },
         {
             name: 'Tomato (Rome)',
             givenBy: 'Depandra tiwari',
             date: '26-09-23',
-            image: 'https://via.placeholder.com/300x200' // Dummy image URL
+            image: 'https://via.placeholder.com/300x200',
+            total_qty: 342,
+            min_qty: 42,
+            price: 2311,
+            description: 'Testing each commodity with all of the things wehn talking with each other. When it will hpne it will make thode things'
         }
     ];
 
@@ -44,9 +56,14 @@ const Category = () => {
                                 <div>
 
                                     <h5 className="mb-1">{tomato.name}</h5>
+                                    <p className="mb-1">{tomato.description}</p>
                                     <p className="mb-1">Given By: {tomato.givenBy} on {tomato.date}</p>
-                                    <button className="btn btn-warning btn-sm mb-2 my-4">GIVE DETAILS</button>
-                                    <div className="mt-2">
+                                    <div className='mx-4'>
+                                    <li>Total_qty : {tomato.total_qty}</li>
+                                    <li>Min_qty : {tomato.min_qty}</li>
+                                    <li>Price : {tomato.price}</li>
+                                    </div>
+                                    <div className="mt-2 mx-2">
                                         <Rating
                                             count={5}
                                             onChange={(newRating) => handleRatingChange(newRating, tomato.name)}
@@ -54,6 +71,7 @@ const Category = () => {
                                             activeColor="#ffd700"
                                         />
                                     </div>
+                                    <button className="btn btn-warning btn-sm mb-2 my-2">GIVE DETAILS</button>
                                 </div>
                                 <div>
 

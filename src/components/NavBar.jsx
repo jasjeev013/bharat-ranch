@@ -5,6 +5,7 @@ import './NavBar.css'
 import websitelogo from '../images/websiteLogo.png'
 import bharatRanchWriting from '../images/bharatRanchWriting.png'
 import AccountMenu from './AccountMenu';
+import { Link } from 'react-router-dom';
 
 function NavBar({ toggleSidebar }) {
     return (
@@ -30,11 +31,11 @@ function NavBar({ toggleSidebar }) {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse className="justify-content-end mx-5" id="basic-navbar-nav">
                     <Nav className="ms-auto">
-                        <Nav.Link href="/" className="fw-bold me-5">Home</Nav.Link>
-                        <Nav.Link href="/" className="fw-bold me-5">Buy/Sell</Nav.Link>
-                        <Nav.Link href="/" className="fw-bold me-5">Donations</Nav.Link>
-                        <Nav.Link href="/" className="fw-bold me-5">Help</Nav.Link>
-                        <Nav.Link href="/" className="fw-bold me-3">Contact Us</Nav.Link>
+                        <Link to="/" className="fw-bold me-5 my-2 navBarButtons">Home</Link>
+                        <Link to="/categories" className="fw-bold me-5 my-2 navBarButtons">Buy</Link>
+                        <Link to="/lending" className="fw-bold me-5 my-2 navBarButtons">Lending</Link>
+                        <Link to="/donations" className="fw-bold me-5 my-2 navBarButtons">Donations</Link>
+                        <Link to="/help" className="fw-bold me-3 my-2 navBarButtons">Help</Link>
                         <AccountMenu/>
                     </Nav>
                 </Navbar.Collapse>
