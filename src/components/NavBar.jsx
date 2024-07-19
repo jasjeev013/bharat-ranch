@@ -21,7 +21,7 @@ function NavBar({ toggleSidebar }) {
             }} >
                 {/* <button className="sidebar-toggle-btn mx-2 me-5" >
                 </button> */}
-                <i onClick={toggleSidebar}  class="fa-solid fa-bars mx-4" style={{
+                <i onClick={toggleSidebar}  className="fa-solid fa-bars mx-4" style={{
                     fontSize: '30px',
                     color: 'black',
                    
@@ -36,6 +36,7 @@ function NavBar({ toggleSidebar }) {
                         <Link to="/lending" className="fw-bold me-5 my-2 navBarButtons">Lending</Link>
                         <Link to="/donations" className="fw-bold me-5 my-2 navBarButtons">Donations</Link>
                         <Link to="/help" className="fw-bold me-3 my-2 navBarButtons">Help</Link>
+                        
                         <AccountMenu/>
                     </Nav>
                 </Navbar.Collapse>

@@ -1,30 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
+import { useRecoilState,  useRecoilValueLoadable } from 'recoil';
+import { categoriesState } from '../state/atoms/atoms';
+import { fetchCategories } from '../state/selectors/selectors';
 
 const Categories = () => {
-    const categories = [
-        { id: 1, name: 'Tomatoes', image: 'https://via.placeholder.com/300', count: 108 },
-        { id: 2, name: 'Apples', image: 'https://via.placeholder.com/300', count: 59 },
-        { id: 3, name: 'Bottle Gourd', image: 'https://via.placeholder.com/300', count: 23 },
-        { id: 4, name: 'Beetroot', image: 'https://via.placeholder.com/300', count: 78 },
-        { id: 5, name: 'Broccoli', image: 'https://via.placeholder.com/300', count: 12 },
-        { id: 6, name: 'Cabbage', image: 'https://via.placeholder.com/300', count: 8 },
-        { id: 7, name: 'Wheat', image: 'https://via.placeholder.com/300', count: 78 },
-        { id: 8, name: 'Maize', image: 'https://via.placeholder.com/300', count: 48 },
-        { id: 9, name: 'Rice', image: 'https://via.placeholder.com/300', count: 48 },
-        { id: 10, name: 'Oats', image: 'https://via.placeholder.com/300', count: 48 },
-        { id: 11, name: 'Barley', image: 'https://via.placeholder.com/300', count: 48 },
-    ];
+    const [categories, setCategories] = useRecoilState(categoriesState);
+    const categoriesLoadable = useRecoilValueLoadable(fetchCategories);
+
+    useEffect(() => {
+        if (categoriesLoadable.state === 'hasValue') {
+    
+            setCategories(categoriesLoadable.contents);
+        }
+        
+    }, [categoriesLoadable, setCategories]);
+
+    if (categoriesLoadable.state === 'loading') {
+        return <div>Loading...</div>;
+    }
+
+    if (categoriesLoadable.state === 'hasError') {
+        return <div>Error loading categories.</div>;
+    }
+
 
     return (
         <div className="container mt-5">
+            
             <header className="text-center mb-5">
                 <h1 className="display-4">Categories</h1>
             </header>
             <div className="row">
-                {categories.map(category => (
-                    <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={category.id}>
+                {categories.length !== 0 && categories.map((category, index) => (
+                    <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={index}>
                         <div className="card  h-100 ">
                             <img
                                 src={category.image}
@@ -35,14 +45,14 @@ const Categories = () => {
                             <div className="card-body text-center">
                                 <div className='d-flex justify-content-between'>
 
-                                    <h5 className="card-title">{category.name}</h5>
+                                    <h5 className="card-title">{category.category}</h5>
                                     <p className="card-text">Count: {category.count}</p>
                                 </div>
                                 <br />
                                 <br />
                                 <div className="d-flex justify-content-end">
 
-                                    <Link to={`/category/${category.id}`} className="btn btn-primary ">
+                                    <Link to={`/category/${category.category}`}  className="btn btn-primary ">
                                         More Details
                                     </Link>
                                 </div>

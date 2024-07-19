@@ -1,0 +1,50 @@
+.main-container {
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    padding: 10px;
+    background-color: #fdd;
+    border-radius: 40px;
+  }
+  
+  .signuplogin-header {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .switch-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: #000;
+  }
+  
+  .switch-btn.active {
+    background-color: #6d8eff;
+    color: #fff;
+  }
+  
+  .input-field {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #6d8eff;
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

@@ -13,6 +13,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Lending from './components/Lending';
 import Donations from './components/Donations';
 import Help from './components/Help';
+import Account from './components/Account';
 
 function App() {
 
@@ -38,6 +39,8 @@ function App() {
           <Route path="/customer" element={<CustomerDashboard />}/>
 
           <Route path="/addingNewItem" element={<AddingNewItem />}/>
+
+          <Route path="/account" element={<Account />}/> 
           
           <Route path="/help" element={<Help/>} />
 
