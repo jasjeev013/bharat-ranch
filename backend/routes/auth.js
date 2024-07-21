@@ -42,7 +42,7 @@ router.post('/register', async (req, res) => {
             { expiresIn: '24h' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token });
+                res.json({message: "User Created Successfully" });
             }
         );
 
@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         // Check if the user exists
-        const user= await User.findOne({ email });
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ errors: [{ msg: 'Invalid credentials' }] });
         }
@@ -73,15 +73,22 @@ router.post('/login', async (req, res) => {
                 role: user.role
             }
         };
-        jwt.sign(
+        const token = jwt.sign(
             payload,
             JWT_SECRET,
-            { expiresIn: '24h' },
-            (err, token) => {
-                if (err) throw err;
-                res.json({ token });
-            }
-        );
+            { expiresIn: '24h' });
+
+        res.cookie('token',token)
+
+        // res.setHeader('Authorization', `Bearer ${token}`);
+
+
+        res.status(200).send({
+            message: 'Logined successful',
+            // token: token
+          });
+   
+
     }
     catch (err) {
         console.error(err.message);
