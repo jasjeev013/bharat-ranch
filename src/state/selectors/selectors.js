@@ -2,6 +2,7 @@ import { selector } from 'recoil';
 import { categoryState } from '../atoms/atoms';
 
 
+
 // -----------------Loading Categories.jsx----------------------
 
 export const fetchCategories = selector({

@@ -1,5 +1,16 @@
 import { atom } from "recoil";
 
+// ------------------------- Login.jsx ---------------------
+
+
+export const userState = atom({
+    key: 'userState',
+    default: {
+        isLoggedIn: false,
+        email: '',
+        role: '',
+    },
+});
 
 
 // -----------------Loading Categories.jsx----------------------

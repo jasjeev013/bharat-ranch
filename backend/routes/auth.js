@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
         await user.save();
 
         // Generate JWT
-        const payload = {
+        /*const payload = {
             user: {
                 email: user.email,
                 role: user.role
@@ -44,7 +44,8 @@ router.post('/register', async (req, res) => {
                 if (err) throw err;
                 res.json({message: "User Created Successfully" });
             }
-        );
+        );*/
+        res.send({message:"User Created Successfully"})
 
     } catch (err) {
         console.error(err.message);
@@ -78,14 +79,18 @@ router.post('/login', async (req, res) => {
             JWT_SECRET,
             { expiresIn: '24h' });
 
-        res.cookie('token',token)
+        /*res.cookie('token',token,{
+            httpOnly:true,
+            secure:true,
+            sameSite:'none'
+        })*/
 
         // res.setHeader('Authorization', `Bearer ${token}`);
 
 
         res.status(200).send({
-            message: 'Logined successful',
-            // token: token
+            role: user.role,
+            token: token
           });
    
 
