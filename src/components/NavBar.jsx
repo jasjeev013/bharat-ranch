@@ -36,7 +36,6 @@ function NavBar({ toggleSidebar }) {
                         <Link to="/lending" className="fw-bold me-5 my-2 navBarButtons">Lending</Link>
                         <Link to="/donations" className="fw-bold me-5 my-2 navBarButtons">Donations</Link>
                         <Link to="/help" className="fw-bold me-3 my-2 navBarButtons">Help</Link>
-                        
                         <AccountMenu/>
                     </Nav>
                 </Navbar.Collapse>

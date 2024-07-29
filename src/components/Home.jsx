@@ -15,8 +15,6 @@ function Home() {
                 fontSize: '20px',
                 fontWeight: 'bold',
                 // borderRadius: '10px'
-
-
             }}>
                 <div className="container">
                     <ControlledCarousel />

@@ -79,15 +79,10 @@ router.post('/login', async (req, res) => {
             JWT_SECRET,
             { expiresIn: '24h' });
 
-        /*res.cookie('token',token,{
-            httpOnly:true,
-            secure:true,
-            sameSite:'none'
-        })*/
+        res.cookie('token',token)
 
+        console.log(req.cookies);
         // res.setHeader('Authorization', `Bearer ${token}`);
-
-
         res.status(200).send({
             role: user.role,
             token: token

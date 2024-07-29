@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { useSetRecoilState } from 'recoil';
-import { userState } from '../state/atoms/atoms';
-import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const [credentails, setCredentials] = useState({ email: '', password: '' });
-  const setUser = useSetRecoilState(userState);
-  let navigate = useNavigate();
-
+  // https://www.npmjs.com/package/recoil-persist
+  // https://www.youtube.com/watch?v=nI8PYZNFtac
 
   const handleInput = (e) => {
     setCredentials({ ...credentails, [e.target.name]: e.target.value })
@@ -16,32 +11,7 @@ const Login = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentails),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      console.log(data);
-      if (data.token) {
-        Cookies.set('token', data.token);
-        setUser({ email: credentails.email, role: data.role, isLoggedIn: true });
-        navigate('/',{replace:true})
-      } else {
-        console.log('Invalid credentials');
-      }
-    } catch (error) {
-      // Handle error
-      console.error('Error logging in', error);
-    }
+    console.log(credentails)
     setCredentials({ email: '', password: '' })
   }
 

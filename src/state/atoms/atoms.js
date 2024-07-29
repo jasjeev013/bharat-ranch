@@ -12,6 +12,22 @@ export const userState = atom({
     },
 });
 
+// ------------------------------ Home.jsx --------------------------
+
+export const userDetails = atom({
+    key: 'userDetails',
+    default: {
+        name: '',
+        email: '',
+        phone: '',
+        contact: '',
+        description: '',
+        role:'',
+        image:'',
+        address: '',
+    },
+});
+
 
 // -----------------Loading Categories.jsx----------------------
 
