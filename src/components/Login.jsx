@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { useSetRecoilState } from 'recoil';
+import { isLoggedIn } from '../state/atoms/atoms';
+import { useNavigate } from 'react-router-dom';
+
 const Login = () => {
   const [credentails, setCredentials] = useState({ email: '', password: '' });
-  // https://www.npmjs.com/package/recoil-persist
-  // https://www.youtube.com/watch?v=nI8PYZNFtac
+  const setIsLoggedIn = useSetRecoilState(isLoggedIn);
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
     setCredentials({ ...credentails, [e.target.name]: e.target.value })
@@ -11,7 +16,24 @@ const Login = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    console.log(credentails)
+    try {
+      // Send POST request with email and password
+      const response = await axios.post('http://localhost:5000/auth/login', credentails, {
+        withCredentials: true // This is important to handle cookies
+      });
+
+      // Handle response
+      console.log('Response:', response.data);
+      setIsLoggedIn(true);
+      navigate('/');
+
+      // Check if the response contains a message
+      if (response.data.message) {
+        console.log('Message:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error logging in:', error.response ? error.response.data : error.message);
+    }
     setCredentials({ email: '', password: '' })
   }
 

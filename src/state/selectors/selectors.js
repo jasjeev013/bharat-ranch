@@ -1,6 +1,23 @@
 import { selector } from 'recoil';
-import { categoryState } from '../atoms/atoms';
+import { categoryState, isLoggedIn } from '../atoms/atoms';
+import axios from 'axios';
 
+
+// -----------------Loading Home.jsx (User)----------------------
+
+export const fetchuserDetails = selector({
+  key: 'getuserDetails',
+  get: async ({ get }) => {
+
+    const isUserLoggedIn = get(isLoggedIn);
+    if (!isUserLoggedIn) return;
+    const response = await axios.get('http://localhost:5000/users/get/email', {
+      withCredentials: true // This is important to handle cookies
+    });
+        const data = await response.data;
+    return data;
+  },
+});
 
 // -----------------Loading Categories.jsx----------------------
 

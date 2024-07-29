@@ -1,15 +1,15 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const {persistAtom } = recoilPersist();
 
 // ------------------------- Login.jsx ---------------------
 
 
-export const userState = atom({
-    key: 'userState',
-    default: {
-        isLoggedIn: false,
-        email: '',
-        role: '',
-    },
+export const isLoggedIn = atom({
+    key: 'isLoggedIn',
+    default: false,
+    effects_UNSTABLE:[persistAtom]
 });
 
 // ------------------------------ Home.jsx --------------------------
@@ -19,7 +19,6 @@ export const userDetails = atom({
     default: {
         name: '',
         email: '',
-        phone: '',
         contact: '',
         description: '',
         role:'',

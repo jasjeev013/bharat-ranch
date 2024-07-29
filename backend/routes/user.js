@@ -33,12 +33,10 @@ router.get('/',auth,async (req, res) => {
 });*/
 
 // Get a specific user by email
-router.get('/email/:email',auth,async (req, res) => {
+router.get('/get/email',auth,async (req, res) => {
   try {
 
-    if(req.user.email!=req.params.email){
-      return res.status(500).send("User with this email not found")
-    }
+    
 
     const user = await User.findOne({email:req.user.email}).select('-password');
     if (!user) {

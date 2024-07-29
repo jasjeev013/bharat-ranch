@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
 
         res.cookie('token',token)
 
-        console.log(req.cookies);
+        console.log(req.cookies,'DOne jii done');
         // res.setHeader('Authorization', `Bearer ${token}`);
         res.status(200).send({
             role: user.role,
