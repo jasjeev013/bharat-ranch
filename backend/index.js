@@ -2,15 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser')
 const cors = require('cors');
+require('dotenv').config()
 
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:3000'], // List of allowed origins
+  origin: [process.env.FRONTEND_URL], // List of allowed origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
   credentials: true // Allow cookies to be sent and received
 }))
+
 const PORT = process.env.PORT || 5000;
 
 

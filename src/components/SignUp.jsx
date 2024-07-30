@@ -6,12 +6,15 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
+import axios from 'axios';
 
 
 
 const SignUp = () => {
-    const [role, setRole] = useState(10);
+    const [role, setRole] = useState('buyer');
     const [credentials, setCredentials] = useState({ name: '', contact: 91, email: '', password: '', address: '', description: '' });
+    const [erroMessage, setErrorMessage] = useState('');
+    const [errors, setErrors] = useState([]);
     const [samepass, setSamePass] = useState(true);
     const navigate = useNavigate();
     const handleChange = (event) => {
@@ -22,37 +25,27 @@ const SignUp = () => {
     }
 
     const handleClick = async (e) => {
-        console.log({
-            ...credentials,
-            role: (role === 10) ? 'buyer' : 'farmer'
-        })
         e.preventDefault();
+        setErrorMessage('');
+        setErrors([]);
         try {
-            const response = await fetch('http://localhost:5000/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ...credentials,
-                    role: (role === 10) ? 'buyer' : 'farmer'
-                }),
-            });
-
-            if (!response.ok) {
-                console.log('User Already exists')
+            const response = await axios.post('http://localhost:5000/auth/register', { ...credentials, role }, { withCredentials: true });
+            const data = await response.data;
+            if (data.result) {
+                navigate("/account", { replace: true });
             }
-
-            const data = await response.json();
-            console.log(data);
-            navigate("/account", { replace: true })
-
         } catch (error) {
             // Handle error
             console.error('Error logging in', error);
+            if (error.response.data.errors[0].message) {
+                setErrorMessage(error.response.data.errors[0].message);
+            } else {
+                setErrors(error.response.data.errors);
+            }
         }
         setCredentials({ name: '', contact: 91, email: '', password: '', address: '', description: '' });
-        setRole(10);
+        setRole('buyer');
+
 
 
     }
@@ -65,17 +58,13 @@ const SignUp = () => {
         }
     }
 
-
-
-
-
     return (
-
         <div className="container w-50 text-center my-5">
-
             <h1 className='text-center my-5'>Sign Up</h1>
             <div className='my-2 w-100'>
-
+                {erroMessage && <Alert severity="error" className='text-center w-75' style={{
+                    marginLeft: '90px',
+                }}>{erroMessage}</Alert>}
                 <TextField
                     className='my-2 mx-1 '
                     id="outlined-multiline-flexible"
@@ -97,12 +86,12 @@ const SignUp = () => {
                         labelId="demo-simple-select-helper-label"
                         id="demo-simple-select-helper"
                         value={role}
-                        defaultValue={10}
+                        defaultValue={'buyer'}
                         label="Role"
                         onChange={handleChange}
                     >
-                        <MenuItem value={10}>Buyer</MenuItem>
-                        <MenuItem value={20}>Farmer</MenuItem>
+                        <MenuItem value={'buyer'}>Buyer</MenuItem>
+                        <MenuItem value={'farmer'}>Farmer</MenuItem>
                     </Select>
                 </FormControl>
             </div>
@@ -167,6 +156,11 @@ const SignUp = () => {
                 name='description'
                 onInput={(e) => handleChangeCredentials(e)}
             />
+            {errors.map((error) => {
+                return <Alert severity="error" className='text-center w-75' style={{
+                    marginLeft: '90px',
+                }}>{error.msg}</Alert>
+            })}
 
             <button className="submit-btn my-5 w-50" onClick={(e) => handleClick(e)}>SUBMIT</button>
         </div>

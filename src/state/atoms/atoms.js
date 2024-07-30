@@ -25,6 +25,7 @@ export const userDetails = atom({
         image:'',
         address: '',
     },
+    effects_UNSTABLE:[persistAtom]
 });
 
 

@@ -3,32 +3,48 @@ import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-// import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 // import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import { Link, useNavigate } from 'react-router-dom';
+import { isLoggedIn, userDetails } from '../state/atoms/atoms';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
+import Cookies from 'js-cookie';
 // import PersonAdd from '@mui/icons-material/PersonAdd';
 // import Settings from '@mui/icons-material/Settings';
 // import Logout from '@mui/icons-material/Logout';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const isLoggedin = useRecoilValue(isLoggedIn);
+  const logsOut = useResetRecoilState(isLoggedIn);
+  const userLogOut = useResetRecoilState(userDetails)
+  const userDetail = useRecoilValue(userDetails);
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
-    // if (isLoggedIn.isLoggedIn) {
-    //   setAnchorEl(event.currentTarget);
-
-    // } else {
-      navigate("/account")  
-    // }
+    if (isLoggedin) setAnchorEl(event.currentTarget);
+    else navigate("/account")
   };
+
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    logsOut();
+    userLogOut();
+    Cookies.remove('token');
+    navigate('/')
+
+  }
+
+
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -41,7 +57,9 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+  
+            {isLoggedin && <Avatar sx={{ width: 32, height: 32 }}> {userDetail.image !== null ? <img src={userDetail.image} height={30} width={30} alt="" /> : userDetail.name.charAt(0).toUpperCase()} </Avatar>}
+            {!isLoggedin && <Avatar sx={{ width: 32, height: 32 }}> <i className="fa-solid fa-user"></i></Avatar>}
           </IconButton>
         </Tooltip>
       </Box>
@@ -80,12 +98,15 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <Link to="/farmer"><MenuItem onClick={handleClose}>
-          <Avatar /> My account(Farmer)
-        </MenuItem></Link>
-        <Link to="/customer"> <MenuItem onClick={handleClose}>
-          <Avatar /> My account(Customer)
-        </MenuItem></Link>
+        {userDetail.role === 'buyer' ?
+          <Link to="/customer"> <MenuItem onClick={handleClose}>
+            <Avatar /> My account(Customer)
+          </MenuItem></Link> :
+          <Link to="/farmer"><MenuItem onClick={handleClose}>
+            <Avatar /> My account(Farmer)
+          </MenuItem></Link>}
+
+
         <Divider />
         {/* <MenuItem onClick={handleClose}>
           <ListItemIcon>
@@ -98,13 +119,16 @@ export default function AccountMenu() {
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
+        </MenuItem>*/}
+        <MenuItem onClick={() => {
+          handleLogout()
+          handleClose()
+        }}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <i className="fa-solid fa-sign-out"></i>
           </ListItemIcon>
           Logout
-        </MenuItem> */}
+        </MenuItem>
       </Menu>
     </React.Fragment>
   );

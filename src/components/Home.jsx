@@ -1,44 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ControlledCarousel from './ControlledCarousel';
 import Cards from './Cards';
 import NewsLetter from './NewsLetter';
 import ContactUs from './ContactUs';
 import botLogo from '../images/botLogo.png'
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { isLoggedIn, userDetails } from '../state/atoms/atoms';
-import { fetchuserDetails } from '../state/selectors/selectors';
+// import {  useRecoilValue } from 'recoil';
+// import { isLoggedIn } from '../state/atoms/atoms';
 
 function Home() {
-    const isLoggedin = useRecoilValue(isLoggedIn);
-    const [user, setUser] = useRecoilState(userDetails);
-    const userDetailsloadable = useRecoilValueLoadable(fetchuserDetails);
-
-    useEffect(() => {
-        if (userDetailsloadable.state === 'hasValue') {
-
-            const {name,email,contact,description,role,image,address} = userDetailsloadable.contents;
-             setUser({name,email,contact,description,role,image,address});
-            
-        }
-        
-    }, [userDetailsloadable,setUser]);
-
-    if (userDetailsloadable.state === 'loading') {
-        return <div>Loading...</div>;
-    }
-
-    if (userDetailsloadable.state === 'hasError') {
-        return <div>Error loading categories.</div>;
-    }
-
-
-
-
+    
     return (
         
         <div className='addMargin'>
-            {console.log(isLoggedin)}
-            {console.log(user)}
             <div className="d-flex justify-content-between" style={{
                 backgroundColor: '#C1DAF9',
                 // margin: '10px',
