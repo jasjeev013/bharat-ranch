@@ -6,8 +6,13 @@ import websitelogo from '../images/websiteLogo.png'
 import bharatRanchWriting from '../images/bharatRanchWriting.png'
 import AccountMenu from './AccountMenu';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userDetails } from '../state/atoms/atoms';
 
 function NavBar({ toggleSidebar }) {
+    const userDetail = useRecoilValue(userDetails);
+
+
     return (
         <div>
 
@@ -33,7 +38,7 @@ function NavBar({ toggleSidebar }) {
                     <Nav className="ms-auto">
                         <Link to="/" className="fw-bold me-5 my-2 navBarButtons">Home</Link>
                         <Link to="/categories" className="fw-bold me-5 my-2 navBarButtons">Buy</Link>
-                        <Link to="/lending" className="fw-bold me-5 my-2 navBarButtons">Lending</Link>
+                        {userDetail.role==='farmer' && <Link to="/lending" className="fw-bold me-5 my-2 navBarButtons">Lending</Link>}
                         <Link to="/donations" className="fw-bold me-5 my-2 navBarButtons">Donations</Link>
                         <Link to="/help" className="fw-bold me-3 my-2 navBarButtons">Help</Link>
                         <AccountMenu/>

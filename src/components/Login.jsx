@@ -62,6 +62,7 @@ const Login = () => {
         type='email'
         onInput={(e) => handleInput(e)}
         value={credentails.email}
+        required
       />
       <TextField
         className='my-2 w-75'
@@ -73,6 +74,7 @@ const Login = () => {
         type='password'
         onInput={(e) => handleInput(e)}
         value={credentails.password}
+        required
       />
       {errors.map((error) => {
         return <Alert key={error.path} severity="error" className='text-center w-75' style={{

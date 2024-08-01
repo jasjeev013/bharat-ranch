@@ -18,7 +18,7 @@ router.post('/',auth, async (req, res) => {
 });
 
 // Read all buy requests for a specific user_id(Purchaser)
-router.get('/email/:email',auth, async (req, res) => {
+router.get('/email',auth, async (req, res) => {
   try {
     const buyRequests = await BuyRequest.find({user_email:req.user.email});
     res.status(200).json(buyRequests);
@@ -26,6 +26,28 @@ router.get('/email/:email',auth, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+// Read All Buy Requests for specific commodit's.user_email
+router.get('/specific/email',auth,authorize('farmer') ,async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+
+    // Find commodities associated with the user_email
+    const commodities = await Commodity.find({ user_email: userEmail });
+
+    // Extract commodity IDs
+    const commodityIds = commodities.map(commodity => commodity._id);
+
+    // Find buy requests for the identified commodities
+    const buyRequests = await BuyRequest.find({ commodity_id: { $in: commodityIds } }).populate('commodity_id');
+
+    res.status(200).json(buyRequests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 // Read all buy requests for a commodity
 router.get('/:id',auth,authorize('farmer') ,async (req, res) => {

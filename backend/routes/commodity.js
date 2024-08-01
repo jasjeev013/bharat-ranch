@@ -3,20 +3,34 @@ const router = express.Router();
 const Commodity = require('../models/Commodity');
 const { auth, authorize } = require('../middleware/auth');
 const upload = require('../config/multer')
+const { check, validationResult } = require('express-validator');
+
 
 // Create a new commodity
-router.post('/',auth,authorize('farmer'),upload.single('image') ,async (req, res) => {
+router.post('/',auth,authorize('farmer'),upload.single('image'),[
+  check('name', 'Name is required').not().isEmpty(),
+  check('description', 'Description is required').not().isEmpty(),
+  check('price', 'Price is required').not().isEmpty(),
+  check('min_qty', 'Minimum Quantity is required').not().isEmpty(),
+  check('total_qty', 'Total Quantity is required').not().isEmpty(),
+  check('category', 'Category is required').not().isEmpty(), 
+] ,async (req, res) => {
+
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array(),result: false });
+    }
   try {
     const {name,description,price,min_qty,total_qty,category} = req.body;
-    const image = null;
+    let image = null;
     if(req.file){
       image = req.file.path;
     }
     const commodity = new Commodity({user_email:req.user.email,name,description,price,min_qty,total_qty,image,category});
-    const savedCommodity = await commodity.save();
-    res.status(201).json(savedCommodity);
+    await commodity.save();
+    res.status(200).json({message:'COmmodity added successfully',result:true});
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: err.message,result:false });
   }
 });
 
@@ -44,7 +58,7 @@ router.get('/email/:email', async (req, res) => {
 
 
 // Read a specific commodity by ID
-router.get('/:id',auth,authorize('farmer') , async (req, res) => {
+router.get('/:id' , async (req, res) => {
   try {
     const commodity = await Commodity.findOne({_id: req.params.id,user_email:req.user.email});
     if (!commodity) {

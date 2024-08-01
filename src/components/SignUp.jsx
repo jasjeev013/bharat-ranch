@@ -77,6 +77,7 @@ const SignUp = () => {
                     value={credentials.name}
                     name='name'
                     onInput={(e) => handleChangeCredentials(e)}
+                    required
                 />
                 <FormControl className='my-2 mx-1 ' style={{
                     width: '26%'
@@ -89,6 +90,7 @@ const SignUp = () => {
                         defaultValue={'buyer'}
                         label="Role"
                         onChange={handleChange}
+                        required
                     >
                         <MenuItem value={'buyer'}>Buyer</MenuItem>
                         <MenuItem value={'farmer'}>Farmer</MenuItem>
@@ -104,6 +106,7 @@ const SignUp = () => {
                 value={credentials.contact}
                 name='contact'
                 onInput={(e) => handleChangeCredentials(e)}
+                required
             />
             <TextField
                 className='my-2 w-75'
@@ -114,6 +117,7 @@ const SignUp = () => {
                 value={credentials.email}
                 name='email'
                 onInput={(e) => handleChangeCredentials(e)}
+                required
             />
             <TextField
                 className='my-2 w-75'
@@ -124,6 +128,7 @@ const SignUp = () => {
                 value={credentials.password}
                 name='password'
                 onInput={(e) => handleChangeCredentials(e)}
+                required
             />
             <TextField
                 className='my-2 w-75'
@@ -132,6 +137,7 @@ const SignUp = () => {
                 multiline
                 maxRows={4}
                 onInput={(e) => checkpass(e)}
+                required
             />
             {!samepass && <Alert severity="warning" className='text-center w-75' style={{
                 marginLeft: '90px',
@@ -145,6 +151,7 @@ const SignUp = () => {
                 value={credentials.address}
                 name='address'
                 onInput={(e) => handleChangeCredentials(e)}
+                required
             />
             <TextField
                 className='my-2 w-75'
@@ -155,6 +162,7 @@ const SignUp = () => {
                 value={credentials.description}
                 name='description'
                 onInput={(e) => handleChangeCredentials(e)}
+                required
             />
             {errors.map((error) => {
                 return <Alert severity="error" className='text-center w-75' style={{

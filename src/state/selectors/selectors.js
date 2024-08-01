@@ -1,12 +1,12 @@
 import { selector } from 'recoil';
-import { categoryState, isLoggedIn } from '../atoms/atoms';
+import { categoryState, isLoggedIn, userDetails } from '../atoms/atoms';
 import axios from 'axios';
 
 
 // -----------------Loading Home.jsx (User)----------------------
 
 export const fetchuserDetails = selector({
-  key: 'getuserDetails',
+  key: 'fetchuserDetails',
   get: async ({ get }) => {
 
     const isUserLoggedIn = get(isLoggedIn);
@@ -14,7 +14,38 @@ export const fetchuserDetails = selector({
     const response = await axios.get('http://localhost:5000/users/get/email', {
       withCredentials: true // This is important to handle cookies
     });
-        const data = await response.data;
+    const data = await response.data;
+    return data;
+  },
+});
+
+// -----------------Loading FarmerDashboard.jsx (Farmer)----------------------
+
+export const fetchBuyRequests = selector({
+  key: 'fetchBuyRequests',
+  get: async ({ get }) => {
+    const isUserLoggedIn = get(isLoggedIn);
+    if (!isUserLoggedIn) return;
+    const response = await axios.get('http://localhost:5000/buy-requests/specific/email', {
+      withCredentials: true // This is important to handle cookies
+    });
+    const data = await response.data;
+    return data;
+  },
+});
+
+// -----------------Loading FarmerDashboard.jsx (Farmer)----------------------
+
+export const fetchAllCommodities = selector({
+  key: 'fetchAllCommodities',
+  get: async ({ get }) => {
+    const isUserLoggedIn = get(isLoggedIn);
+    if (!isUserLoggedIn) return;
+    const userDet = get(userDetails);
+    const response = await axios.get(`http://localhost:5000/commodities/email/${userDet.email}`, {
+      withCredentials: true // This is important to handle cookies
+    });
+    const data = await response.data;
     return data;
   },
 });
@@ -48,7 +79,7 @@ export const fetchCategory = selector({
       return { error }
     }
   },
-  set: ({set},category) =>{
-    set(categoryState,category);
+  set: ({ set }, category) => {
+    set(categoryState, category);
   }
 });

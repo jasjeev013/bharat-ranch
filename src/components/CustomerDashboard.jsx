@@ -1,12 +1,18 @@
 import React from 'react';
 import { Container, Row, Col, Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useRecoilValue } from 'recoil';
+import { userDetails } from '../state/atoms/atoms';
+
+
+
 const CustomerDashboard = () => {
+    const userDetail = useRecoilValue(userDetails);
     return (
         <Container>
             <div className="my-4 d-flex justify-content-between">
                 <div>
-                    <h1>Hi Farmer</h1>
+                    <h1>Hi {userDetail.name}</h1>
                 </div>
                 {/* <div>
                     <Button variant="primary">+ New Item</Button>
