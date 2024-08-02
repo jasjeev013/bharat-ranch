@@ -26,6 +26,27 @@ router.get('/borrower',auth,authorize('farmer'), async (req, res) => {
   }
 });
 
+// Read All Borrow Requests for specific equpiment's .user_email
+router.get('/specific/email',auth,authorize('farmer') ,async (req, res) => {
+  try {
+    const userEmail = req.user.email;
+
+    // Find commodities associated with the user_email
+    const equipments = await Equipment.find({ user_email: userEmail });
+
+    // Extract commodity IDs
+    const equpitmentsIds = equipments.map(equipment => equipment._id);
+
+    // Find buy requests for the identified commodities
+    const buyRequests = await BorrowRequest.find({ equipment_id: { $in: equpitmentsIds } }).populate('equipment_id');
+
+    res.status(200).json(buyRequests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 // Read a  request by equipment_id
 router.get('/equipment/:id', auth,authorize('farmer'),async (req, res) => {

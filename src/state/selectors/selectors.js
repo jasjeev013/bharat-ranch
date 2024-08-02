@@ -50,6 +50,53 @@ export const fetchAllCommodities = selector({
   },
 });
 
+// -----------------Loading Lending.jsx (Farmer)----------------------
+
+export const fetchAllEquipments = selector({
+  key: 'fetchAllEquipments',
+  get: async ({ get }) => {
+    const isUserLoggedIn = get(isLoggedIn);
+    if (!isUserLoggedIn) return;
+    const response = await axios.get(`http://localhost:5000/equipments/`, {
+      withCredentials: true // This is important to handle cookies
+    });
+    const data = await response.data;
+    return data;
+  },
+});
+
+// -----------------Loading FarmerEquipmentAdded.jsx (Farmer)----------------------
+
+export const fetchAllEquipmentsForSpecificUser = selector({
+  key: 'fetchAllEquipmentsForSpecificUser',
+  get: async ({ get }) => {
+    const isUserLoggedIn = get(isLoggedIn);
+    if (!isUserLoggedIn) return;
+    const userDet = get(userDetails);
+    const response = await axios.get(`http://localhost:5000/equipments/email/${userDet.email}`, {
+      withCredentials: true // This is important to handle cookies
+    });
+    const data = await response.data;
+    return data;
+  },
+});
+
+
+// -----------------Loading FarmerAllBorrowRequests.jsx (Farmer)----------------------
+
+export const fetchAllBorrowRequests = selector({
+  key: 'fetchAllBorrowRequests',
+  get: async ({ get }) => {
+    const isUserLoggedIn = get(isLoggedIn);
+    if (!isUserLoggedIn) return;
+    const response = await axios.get(`http://localhost:5000/borrow-requests/specific/email`, {
+      withCredentials: true // This is important to handle cookies
+    });
+    const data = await response.data;
+    return data;
+  },
+});
+
 // -----------------Loading Categories.jsx----------------------
 
 export const fetchCategories = selector({

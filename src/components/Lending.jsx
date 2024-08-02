@@ -1,7 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useRecoilValueLoadable } from 'recoil';
+import { fetchAllEquipments } from '../state/selectors/selectors';
 
 const Lending = () => {
-  const categories = [
+  const [equipments, setEquipments] = useState([]);
+  const equipmentsLoadable = useRecoilValueLoadable(fetchAllEquipments);
+
+
+  useEffect(() => {
+      if (equipmentsLoadable.state === 'hasValue') {
+  
+        setEquipments(equipmentsLoadable.contents);
+      }
+      
+  }, [equipmentsLoadable, setEquipments]);
+
+  if (equipmentsLoadable.state === 'loading') {
+      return <div>Loading...</div>;
+  }
+
+  if (equipmentsLoadable.state === 'hasError') {
+      return <div>Error loading categories.</div>;
+  }
+
+
+  const jin_tapak_dam_dam = [
     { id: 1, name: 'Tomatoes', image: 'https://via.placeholder.com/300', qty: '44', Price: 108, description: 'Hello this is a test card. working on the lending item' },
     { id: 2, name: 'Apples', image: 'https://via.placeholder.com/300', qty: '44', Price: 59, description: 'Hello this is a test card. working on the lending item' },
     { id: 3, name: 'Bottle Gourd', image: 'https://via.placeholder.com/300', qty: '44', Price: 23, description: 'Hello this is a test card. working on the lending item' },
@@ -20,8 +43,8 @@ const Lending = () => {
       <div className="row" style={{
         marginBottom: '90px'
       }}>
-        {categories.map(category => (
-          <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={category.id}>
+        {equipments.map((category,index) => (
+          <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={index}>
             <div className="card  h-100 ">
               <img
                 src={category.image}

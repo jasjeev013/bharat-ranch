@@ -16,6 +16,7 @@ import Help from './components/Help';
 import Account from './components/Account';
 import { useRecoilValue } from 'recoil';
 import { isLoggedIn, userDetails } from './state/atoms/atoms';
+import AddNewEquipment from './components/AddNewEquipment';
 
 function App() {
 
@@ -43,6 +44,8 @@ function App() {
           {userDetail.role==='buyer' && <Route path="/customer" element={<CustomerDashboard />}/>}
 
           <Route path="/addingNewItem" element={<AddingNewItem />}/>
+
+          <Route path="/addNewEquipment" element={<AddNewEquipment />}/>
 
           {!isLogginin && <Route path="/account" element={<Account />}/> }
           
