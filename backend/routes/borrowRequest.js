@@ -5,14 +5,14 @@ const { auth, authorize } = require('../middleware/auth');
 const Equipment = require('../models/equipment');
 
 // Create a new borrow request
-router.post('/:id',auth,authorize('farmer'), async (req, res) => {
+router.post('/add',auth,authorize('farmer'), async (req, res) => {
   try {
-    const {time_period,qty} = req.body;
-    const borrowRequest = new BorrowRequest({equipment_id:req.params.id,user_email: req.user.email,time_period,status:'pending',qty});
-    const savedBorrowRequest = await borrowRequest.save();
-    res.status(201).json(savedBorrowRequest);
+    const {equipment_id,time_period,qty} = req.body;
+    const borrowRequest = new BorrowRequest({equipment_id,user_email: req.user.email,time_period,status:'pending',qty});
+    await borrowRequest.save();
+    res.status(201).json({message:'Successfully Lended',result:true});
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).json({ message: err.message,result:true });
   }
 });
 

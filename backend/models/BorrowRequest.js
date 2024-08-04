@@ -6,7 +6,7 @@ const borrowRequestSchema = new mongoose.Schema({
   time_period: { type: String, required: true },
   qty: { type: Number, required: true },
   status: { type: String, enum: ['accepted', 'pending','rejected'], required: true },
-  start_date: { type: Date },
+  start_date: { type: Date ,default: Date.now },
 });
 
 module.exports = mongoose.model('BorrowRequest', borrowRequestSchema);

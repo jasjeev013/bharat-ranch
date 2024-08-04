@@ -1,74 +1,78 @@
 import React, { useEffect, useState } from 'react'
-import { useRecoilValueLoadable } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { fetchAllEquipments } from '../state/selectors/selectors';
+import axios from 'axios';
+import { isLoggedIn, userDetails } from '../state/atoms/atoms';
 
 const Lending = () => {
+  const isLoggedin = useRecoilValue(isLoggedIn);
+  const userDet = useRecoilValue(userDetails);
+
   const [equipments, setEquipments] = useState([]);
   const equipmentsLoadable = useRecoilValueLoadable(fetchAllEquipments);
 
 
   useEffect(() => {
-      if (equipmentsLoadable.state === 'hasValue') {
-  
-        setEquipments(equipmentsLoadable.contents);
-      }
-      
+    if (equipmentsLoadable.state === 'hasValue') {
+
+      setEquipments(equipmentsLoadable.contents);
+    }
+
   }, [equipmentsLoadable, setEquipments]);
 
   if (equipmentsLoadable.state === 'loading') {
-      return <div>Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   if (equipmentsLoadable.state === 'hasError') {
-      return <div>Error loading categories.</div>;
+    return <div>Error loading categories.</div>;
   }
 
 
-  const jin_tapak_dam_dam = [
-    { id: 1, name: 'Tomatoes', image: 'https://via.placeholder.com/300', qty: '44', Price: 108, description: 'Hello this is a test card. working on the lending item' },
-    { id: 2, name: 'Apples', image: 'https://via.placeholder.com/300', qty: '44', Price: 59, description: 'Hello this is a test card. working on the lending item' },
-    { id: 3, name: 'Bottle Gourd', image: 'https://via.placeholder.com/300', qty: '44', Price: 23, description: 'Hello this is a test card. working on the lending item' },
-    { id: 4, name: 'Beetroot', image: 'https://via.placeholder.com/300', qty: '44', Price: 78, description: 'Hello this is a test card. working on the lending item' },
-    { id: 5, name: 'Broccoli', image: 'https://via.placeholder.com/300', qty: '44', Price: 12, description: 'Hello this is a test card. working on the lending item' },
-    { id: 6, name: 'Cabbage', image: 'https://via.placeholder.com/300', qty: '44', Price: 8, description: 'Hello this is a test card. working on the lending item' },
-    { id: 7, name: 'Wheat', image: 'https://via.placeholder.com/300', qty: '44', Price: 78, description: 'Hello this is a test card. working on the lending item' },
-    { id: 8, name: 'Maize', image: 'https://via.placeholder.com/300', qty: '44', Price: 48, description: 'Hello this is a test card. working on the lending item' },
-    { id: 9, name: 'Rice', image: 'https://via.placeholder.com/300', qty: '44', Price: 48, description: 'Hello this is a test card. working on the lending item' },
-    { id: 10, name: 'Oats', image: 'https://via.placeholder.com/300', qty: '44', Price: 48, description: 'Hello this is a test card. working on the lending item' },
-    { id: 11, name: 'Barley', image: 'https://via.placeholder.com/300', qty: '44', Price: 48, description: 'Hello this is a test card. working on the lending item' },
-  ];
+
+  const lendItem = async (equipment_id,time_period,qty) => {
+    console.log({equipment_id,time_period,qty})
+    const response = await axios.post('http://localhost:5000/borrow-requests/add',{equipment_id,time_period,qty},{
+      withCredentials: true // This is important to handle cookies
+    });
+    if(response.data.result){
+      console.log(response.data.message);
+
+    }
+  }
 
   return (
     <div className="container mt-5 addMargin" >
       <div className="row" style={{
         marginBottom: '90px'
       }}>
-        {equipments.map((category,index) => (
+        {equipments.map((equipment, index) => (
           <div className="col-lg-3 col-md-4 col-sm-6 mb-4" key={index}>
+            {console.log(equipment)}
             <div className="card  h-100 ">
               <img
-                src={category.image}
+                src={equipment.image}
                 className="card-img-top"
-                alt={category.name}
+                alt={equipment.name}
                 style={{ height: '200px', objectFit: 'cover', padding: '0.2rem', borderRadius: '' }}
               />
               <div className="card-body">
                 <div className='d-flex justify-content-between'>
 
-                  <h5 className="card-title">{category.name}</h5>
-                  <p className="card-text">Price: {category.Price} </p>
-                  <p className="card-text">Qty: {category.qty} </p>
+                  <h5 className="card-title">{equipment.name}</h5>
+                  <p className="card-text">Price: {equipment.Price} </p>
+                  <p className="card-text">Qty: {equipment.qty} </p>
                 </div>
                 <p style={{
                   fontSize: '14px',
-                }}>{category.description}</p>
+                }}>{equipment.description}</p>
                 <br />
                 <br />
                 <div className="d-flex justify-content-end">
 
-                  <a href="/" className="btn btn-primary ">
-                    More Details
-                  </a>
+                  {isLoggedin && userDet.role==='farmer' && userDet.email!==equipment.user_email &&   <button onClick={() => lendItem(equipment._id,12,1)} className="btn btn-primary ">
+                    Lend Item
+                  </button>}
                 </div>
               </div>
             </div>
