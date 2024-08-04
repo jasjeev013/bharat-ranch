@@ -17,6 +17,7 @@ import Account from './components/Account';
 import { useRecoilValue } from 'recoil';
 import { isLoggedIn, userDetails } from './state/atoms/atoms';
 import AddNewEquipment from './components/AddNewEquipment';
+import FarmerItemsDashboard from './components/FarmerItemsDashboard';
 
 function App() {
 
@@ -39,6 +40,12 @@ function App() {
 
         <Routes>
           
+          {userDetail.role==='farmer' && <Route path="/farmer/orders" element={<FarmerDashboard />}/>}
+
+          {userDetail.role==='farmer' && <Route path="/farmer/items" element={<FarmerItemsDashboard />}/>}
+
+
+
           {userDetail.role==='farmer' && <Route path="/farmer" element={<FarmerDashboard />}/>}
   
           {userDetail.role==='buyer' && <Route path="/customer" element={<CustomerDashboard />}/>}

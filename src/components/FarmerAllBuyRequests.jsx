@@ -29,7 +29,7 @@ const FarmerAllBuyRequests = () => {
   return (
     <Row className="my-4">
                 <Col>
-                    <h3>Buyer's Request:</h3>
+                    <h3>Buy Requests:</h3>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
