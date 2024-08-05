@@ -20,7 +20,7 @@ router.post('/',auth, async (req, res) => {
 // Read all buy requests for a specific user_id(Purchaser)
 router.get('/email',auth, async (req, res) => {
   try {
-    const buyRequests = await BuyRequest.find({user_email:req.user.email});
+    const buyRequests = await BuyRequest.find({user_email:req.user.email}).populate('commodity_id');
     res.status(200).json(buyRequests);
   } catch (err) {
     res.status(500).json({ message: err.message });

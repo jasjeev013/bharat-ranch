@@ -97,6 +97,36 @@ export const fetchAllBorrowRequests = selector({
   },
 });
 
+// -----------------Loading FarmerBorrowedEquipments.jsx (Farmer)----------------------
+
+export const fetchAllBorrowedEquipments = selector({
+  key: 'fetchAllBorrowedEquipments',
+  get: async ({ get }) => {
+    const isUserLoggedIn = get(isLoggedIn);
+    if (!isUserLoggedIn) return;
+    const response = await axios.get(`http://localhost:5000/borrow-requests/borrower`, {
+      withCredentials: true // This is important to handle cookies
+    });
+    const data = await response.data;
+    return data;
+  },
+});
+
+// -----------------Loading CustomerDashBoard.jsx (Farmer)----------------------
+
+export const fetchAllCustomerBuyRequests = selector({
+  key: 'fetchAllCustomerBuyRequests',
+  get: async ({ get }) => {
+    const isUserLoggedIn = get(isLoggedIn);
+    if (!isUserLoggedIn) return;
+    const response = await axios.get(`http://localhost:5000/buy-requests/email`, {
+      withCredentials: true // This is important to handle cookies
+    });
+    const data = await response.data;
+    return data;
+  },
+});
+
 // -----------------Loading Categories.jsx----------------------
 
 export const fetchCategories = selector({

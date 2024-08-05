@@ -3,14 +3,13 @@ import FarmerAddedProducts from './FarmerAddedProducts'
 import FarmerEquipmentsAdded from './FarmerEquipmentsAdded'
 import FarmerAllBuyRequests from './FarmerAllBuyRequests'
 import FarmerAllBorrowRequests from './FarmerAllBorrowRequests'
-import FarmerNavbar from './FarmerNavbar'
 import { Container } from 'react-bootstrap'
 
 const FarmerItemsDashboard = () => {
     return (
         <div>
-            <FarmerNavbar />
-            z<Container>
+        
+            <Container>
                 {/* Products Added */}
                 <FarmerAddedProducts />
                 {/* Equipments Adeed */}

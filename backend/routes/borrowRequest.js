@@ -19,7 +19,7 @@ router.post('/add',auth,authorize('farmer'), async (req, res) => {
 // Read all borrow requests for specific borrower
 router.get('/borrower',auth,authorize('farmer'), async (req, res) => {
   try {
-    const borrowRequests = await BorrowRequest.find({user_email:req.user.email});
+    const borrowRequests = await BorrowRequest.find({user_email:req.user.email}).populate('equipment_id');
     res.status(200).json(borrowRequests);
   } catch (err) {
     res.status(500).json({ message: err.message });

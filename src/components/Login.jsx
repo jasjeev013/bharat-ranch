@@ -27,9 +27,9 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/auth/login', credentails, { withCredentials: true });
       // Handle response
       if (response.data.result) {
-        setIsLoggedIn(true);
         const userDetails = await fetchUserDetails();
         const {name,email,contact,description,role,image,address} = userDetails.data;
+        setIsLoggedIn(true);
         setUserDetails({name,email,contact,description,role,image,address})
         navigate('/');
       }
