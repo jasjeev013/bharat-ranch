@@ -1,7 +1,8 @@
+import axios from 'axios';
+import {  Form } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react'
 import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { fetchAllEquipments } from '../state/selectors/selectors';
-import axios from 'axios';
 import { isLoggedIn, userDetails } from '../state/atoms/atoms';
 
 const Lending = () => {
@@ -30,12 +31,12 @@ const Lending = () => {
 
 
 
-  const lendItem = async (equipment_id,time_period,qty) => {
-    console.log({equipment_id,time_period,qty})
-    const response = await axios.post('http://localhost:5000/borrow-requests/add',{equipment_id,time_period,qty},{
+  const lendItem = async (equipment_id, time_period, qty) => {
+    console.log({ equipment_id, time_period, qty })
+    const response = await axios.post('http://localhost:5000/borrow-requests/add', { equipment_id, time_period, qty }, {
       withCredentials: true // This is important to handle cookies
     });
-    if(response.data.result){
+    if (response.data.result) {
       console.log(response.data.message);
 
     }
@@ -69,10 +70,28 @@ const Lending = () => {
                 <br />
                 <br />
                 <div className="d-flex justify-content-end">
-
-                  {isLoggedin && userDet.role==='farmer' && userDet.email!==equipment.user_email &&   <button onClick={() => lendItem(equipment._id,12,1)} className="btn btn-primary ">
+                <div className='d-flex justify-content-center'>
+                  {isLoggedin && userDet.role === 'farmer' && userDet.email !== equipment.user_email && <button style={{
+                    height: '70%',
+                  }} onClick={() => lendItem(equipment._id, 12, 1)} className="btn btn-primary my-2">
+                    
                     Lend Item
                   </button>}
+                  {isLoggedin && userDet.role === 'farmer' && userDet.email !== equipment.user_email && <Form.Control
+                      type="number"
+                      name='min_qty'
+                      style={{
+                        width: '50%',
+                        height: '50%',
+                        borderRadius: '10px',
+                        border: '1px solid black'
+                      }}
+                      className='mx-2 my-3'
+                      value={1}
+                      // onChange={(e) => changeInput(e)}     
+                      required
+                    />}
+                  </div>
                 </div>
               </div>
             </div>
