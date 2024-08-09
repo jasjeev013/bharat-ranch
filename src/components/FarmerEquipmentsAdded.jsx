@@ -47,15 +47,7 @@ const FarmerEquipmentsAdded = () => {
                     </thead>
                     <tbody>
                         {/* Sample data row, you can map through your data here */}
-                        <tr>
-                            <td>1</td>
-                            <td>Product 1</td>
-                            <td>10</td>
-                            <td>$100</td>
-                            <td>Selling</td>
-                            <td><Button variant="warning">Update</Button></td>
-                            <td><Button variant="danger">Delete</Button></td>
-                        </tr>
+                        
 
                         {equipments.length !== 0 && equipments.map((equpment, index) => (
                             <tr key={index}>

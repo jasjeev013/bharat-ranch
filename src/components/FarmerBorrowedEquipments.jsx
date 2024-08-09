@@ -14,6 +14,7 @@ const FarmerBorrowedEquipments = () => {
         if (borrowedEuipmentsLoadable.state === 'hasValue') {
 
             setBorrowedEquipments(borrowedEuipmentsLoadable.contents);
+            console.log(borrowedEuipmentsLoadable.contents)
         }
 
     }, [borrowedEuipmentsLoadable, setBorrowedEquipments]);
@@ -48,16 +49,7 @@ const FarmerBorrowedEquipments = () => {
                         </thead>
                         <tbody>
                             {/* Sample data row, you can map through your data here */}
-                            <tr>
-                                <td>1</td>
-                                <td>Product 1</td>
-                                <td>5</td>
-                                <td>$50</td>
-                                <td>
-                                    Pending
-                                </td>
-                                <td>None</td>
-                            </tr>
+                            
                             {borrowedEquipments.length !== 0 && borrowedEquipments.map((borrowRequest, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>

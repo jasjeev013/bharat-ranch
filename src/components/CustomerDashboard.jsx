@@ -59,14 +59,7 @@ const CustomerDashboard = () => {
                         </thead>
                         <tbody>
                             {/* Sample data row, you can map through your data here */}
-                            <tr>
-                                <td>1</td>
-                                <td>Product 1</td>
-                                <td>5</td>
-                                <td>$50</td>
-                                <td>Order Dispatched</td>
-                                <td>None</td>
-                            </tr>
+                           
                             {/* Add more rows as needed */}
 
                             {buyRequests.length!==0 && buyRequests.map((buyRequest,index) => (

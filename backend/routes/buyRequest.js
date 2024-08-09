@@ -67,7 +67,7 @@ router.get('/:id',auth,authorize('farmer') ,async (req, res) => {
 
 
 // Update a buy request
-router.put('/:id',auth, async (req, res) => {
+router.put('/:id',auth,authorize('farmer'), async (req, res) => {
   const { status } = req.body;
   if (status == null) {
     return res.status(400).json({ message: 'Invalid status' });

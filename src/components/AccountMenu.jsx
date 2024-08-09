@@ -39,7 +39,6 @@ export default function AccountMenu() {
     logsOut();
     userLogOut();
     Cookies.remove('token');
-    navigate('/')
 
   }
 
@@ -120,15 +119,16 @@ export default function AccountMenu() {
           </ListItemIcon>
           Settings
         </MenuItem>*/}
-        <MenuItem onClick={() => {
+        <a href="/"><MenuItem onClick={() => {
           handleLogout()
           handleClose()
-        }}>
+        }}> 
           <ListItemIcon>
             <i className="fa-solid fa-sign-out"></i>
           </ListItemIcon>
           Logout
         </MenuItem>
+          </a>
       </Menu>
     </React.Fragment>
   );

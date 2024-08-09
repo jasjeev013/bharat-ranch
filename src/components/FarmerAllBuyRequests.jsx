@@ -3,6 +3,7 @@ import {  Row, Col, Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {  fetchBuyRequests } from '../state/selectors/selectors';
 import { useRecoilValueLoadable } from 'recoil';
+import axios from 'axios';
 
 
 const FarmerAllBuyRequests = () => {
@@ -26,6 +27,13 @@ const FarmerAllBuyRequests = () => {
     if (buyRequestsLoadable.state === 'hasError') {
         return <div>Error loading categories.</div>;
     }
+
+
+    const updateCommodity = async (e,id) => {
+        const response = await axios.put(`http://localhost:5000/buy-requests/${id}`,{status: e.target.name},{ withCredentials: true})
+        console.log(response.data)
+    }
+
   return (
     <Row className="my-4">
                 <Col>
@@ -44,26 +52,21 @@ const FarmerAllBuyRequests = () => {
                         </thead>
                         <tbody>
                             {/* Sample data row, you can map through your data here */}
-                            <tr>
-                                <td>1</td>
-                                <td>Product 1</td>
-                                <td>5</td>
-                                <td>$50</td>
-                                <td>
-                                    <Button variant="success">Accept</Button>{' '}
-                                    <Button variant="danger">Reject</Button>
-                                </td>
-                                <td>None</td>
-                            </tr>
+                        
                             {buyRequests.length!==0 && buyRequests.map((buyRequest,index) => (
                                 <tr key={index}>
+                                   
                                     <td>{index+1}</td>
                                     <td>{buyRequest.commodity_id.name}</td>
                                     <td>{buyRequest.quantity}</td>
                                     <td>{buyRequest.commodity_id.price}</td>
                                     <td>
-                                        <Button variant="success">Accept</Button>{' '}
-                                        <Button variant="danger">Reject</Button>
+                                        {(buyRequest.status === 'pending') &&
+                                        <Button name='accepted' onClick={(e) => updateCommodity(e,buyRequest._id)} variant="success">Accept</Button>}
+                                        {' '}
+                                        { (buyRequest.status === 'pending') && 
+                                        <Button name='rejected' onClick={(e) => updateCommodity(e,buyRequest._id)} variant="danger">Reject</Button>}
+                                        {(buyRequest.status!=='pending') && buyRequest.status}
                                     </td>
                                     <td>None</td>
                                 </tr>
