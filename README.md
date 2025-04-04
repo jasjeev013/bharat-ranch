@@ -193,24 +193,23 @@ bharat-ranch/
 - `POST /buy-requests` - Create buy request
 - `POST /borrow-requests` - Create borrow request
 
-*(Complete API documentation available in [API Docs](#))*
 
 ---
 
 ## 📸 Screenshots
 
 ### Homepage
-![Homepage](./public/homepage.png) *(Replace with actual screenshot)*
+![Homepage](./public/homepage.png) 
 
 ### Farmer Dashboard
-![Farmer Dashboard](./public/farmerDashboard.png) *(Replace with actual screenshot)*
+![Farmer Dashboard](./public/farmerDashboard.png) 
 
 ### Marketplace
-![Marketplace](./public/marketPlace.png) *(Replace with actual screenshot)*
-![Marketplace](./public/marketPlace2.png) *(Replace with actual screenshot)*
+![Marketplace](./public/marketPlace.png) 
+![Marketplace](./public/marketPlace2.png) 
 
 ### Adding Interface
-![Chat](./public/addingComm.png) *(Replace with actual screenshot)*
+![Chat](./public/addingComm.png) 
 
 ---
 
