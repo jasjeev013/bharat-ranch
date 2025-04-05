@@ -23,8 +23,9 @@ BharatRanch is a cutting-edge platform connecting farmers and buyers for bulk tr
 5. [Project Structure](#-project-structure)
 6. [API Documentation](#-api-documentation)
 7. [Screenshots](#-screenshots)
-8. [Contributing](#-contributing)
-9. [Contact](#-contact)
+8. [Data Modeling](#-data-modeling) 
+9. [Contributing](#-contributing)
+10. [Contact](#-contact)
 
 ---
 
@@ -212,6 +213,14 @@ bharat-ranch/
 ![Chat](./public/addingComm.png) 
 
 ---
+## 🗄 Data Modeling
+
+### ER Diagram  
+![ER Diagram](/public/bharatRanch.png)  
+
+
+---
+
 
 ## 🤝 Contributing
 
